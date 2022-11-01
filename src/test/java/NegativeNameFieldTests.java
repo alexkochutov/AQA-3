@@ -25,6 +25,7 @@ public class NegativeNameFieldTests {
         options.addArguments("--no-sandbox");
         options.addArguments("--headless");
         driver = new ChromeDriver(options);
+        driver.get("http://localhost:9999");
     }
 
     @AfterEach
@@ -34,49 +35,45 @@ public class NegativeNameFieldTests {
     }
 
     @Test
-    void EmptyNameField() {
-        driver.get("http://localhost:9999");
-        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79031234567");
-        driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
-        driver.findElement(By.cssSelector("[type=button]")).click();
+    void emptyNameField() {
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79031234567");
+        driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
+        driver.findElement(By.cssSelector("[type='button']")).click();
         String expected = "Поле обязательно для заполнения";
-        String actual = driver.findElement(By.cssSelector("[data-test-id=name] span.input__sub")).getText().trim();
+        String actual = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText().trim();
         assertEquals(expected, actual);
     }
 
     @Test
-    void UseLatinChars() {
-        driver.get("http://localhost:9999");
-        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Anna Maria Hafele");
-        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79031234567");
-        driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
-        driver.findElement(By.cssSelector("[type=button]")).click();
+    void useLatinChars() {
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Anna Maria Hafele");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79031234567");
+        driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
+        driver.findElement(By.cssSelector("[type='button']")).click();
         String expected = "Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.";
-        String actual = driver.findElement(By.cssSelector("[data-test-id=name] span.input__sub")).getText().trim();
+        String actual = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText().trim();
         assertEquals(expected, actual);
     }
 
     @Test
-    void UseCyrillicCharsWithSpecialSymbols() {
-        driver.get("http://localhost:9999");
-        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Анна-Мария $ Хафеле");
-        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79031234567");
-        driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
-        driver.findElement(By.cssSelector("[type=button]")).click();
+    void useCyrillicCharsWithSpecialSymbols() {
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Анна-Мария $ Хафеле");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79031234567");
+        driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
+        driver.findElement(By.cssSelector("[type='button']")).click();
         String expected = "Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.";
-        String actual = driver.findElement(By.cssSelector("[data-test-id=name] span.input__sub")).getText().trim();
+        String actual = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText().trim();
         assertEquals(expected, actual);
     }
 
     @Test
-    void UseNumbers() {
-        driver.get("http://localhost:9999");
-        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("79031234567");
-        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79031234567");
-        driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
-        driver.findElement(By.cssSelector("[type=button]")).click();
+    void useNumbers() {
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("79031234567");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79031234567");
+        driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
+        driver.findElement(By.cssSelector("[type='button']")).click();
         String expected = "Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.";
-        String actual = driver.findElement(By.cssSelector("[data-test-id=name] span.input__sub")).getText().trim();
+        String actual = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText().trim();
         assertEquals(expected, actual);
     }
 }

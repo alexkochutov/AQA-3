@@ -26,6 +26,7 @@ public class NegativeCheckBoxTests {
         options.addArguments("--no-sandbox");
         options.addArguments("--headless");
         driver = new ChromeDriver(options);
+        driver.get("http://localhost:9999");
     }
 
     @AfterEach
@@ -35,23 +36,11 @@ public class NegativeCheckBoxTests {
     }
 
     @Test
-    void EmptyCheckBox() {
-        driver.get("http://localhost:9999");
-        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Степан Васильев");
-        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79031234567");
-        driver.findElement(By.cssSelector("[type=button]")).click();
-        boolean actual = driver.findElement(By.cssSelector("[data-test-id=agreement]")).getAttribute("class").contains("input_invalid");
+    void emptyCheckBox() {
+        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Степан Васильев");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79031234567");
+        driver.findElement(By.cssSelector("[type='button']")).click();
+        boolean actual = driver.findElement(By.cssSelector("[data-test-id='agreement']")).getAttribute("class").contains("input_invalid");
         assertTrue(actual);
-    }
-
-    @Test
-    void EmptyCheckBoxCheckedWithColor() {
-        driver.get("http://localhost:9999");
-        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Степан Васильев");
-        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79031234567");
-        driver.findElement(By.cssSelector("[type=button]")).click();
-        String expected = "rgba(255, 92, 92, 1)";
-        String actual = driver.findElement(By.cssSelector("[data-test-id=agreement] span.checkbox__text")).getCssValue("color");
-        assertEquals(expected, actual);
     }
 }
